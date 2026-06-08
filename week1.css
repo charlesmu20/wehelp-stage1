@@ -36,6 +36,7 @@ body {
     width: 1200px;
     margin: 0 auto;
     margin-top: 50px;
+    margin-bottom: 50px;
 }
 /* Bars區塊*/
 .bars {
@@ -78,7 +79,7 @@ body {
 }
 .block {
     position: relative;
-    background-image: url("pic.jpg");
+    background-image: url("https://fastly.picsum.photos/id/13/2500/1667.jpg?hmac=SoX9UoHhN8HyklRA4A3vcCWJMVtiBXUg0W4ljWTor7s");
     background-size: cover;
     background-position: center;
     height: 200px;
