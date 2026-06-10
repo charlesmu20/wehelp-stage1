@@ -99,12 +99,7 @@
     </main>
     <script>
         function toggle() {
-            const burgerMenu = document.getElementById('burgerMenu');
-            if (burgerMenu.style.display === 'flex'){
-                burgerMenu.style.display = 'none';
-            } else {
-                burgerMenu.style.display = 'flex';
-            }
+            document.getElementById('burgerMenu').classList.toggle('active');
         }
     </script>
 </body>

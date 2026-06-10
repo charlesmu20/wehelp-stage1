@@ -18,6 +18,7 @@ body {
     display: flex;
     gap: 20px;
 }
+/* Nav burger */
 .burger {
     display: none;
     flex-direction: column;
@@ -66,9 +67,7 @@ body {
 .main-content {
     width: 1200px;
     max-width: 100%;
-    margin: 0 auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin: 40px auto;
 }
 /* Bars區塊*/
 .bars {
@@ -80,7 +79,6 @@ body {
     /* 共用樣式 */
     height: 50px;
     display: flex;
-    justify-content: flex-start;
     align-items: center;
     gap:10px;
     background-color: #d6eaf8;
@@ -131,7 +129,7 @@ body {
     text-align: center;
     padding: 8px 0;
 }
-
+/* 1200px */
 @media (max-width: 1200px){
     .main-content {
         width: 90%;
@@ -160,6 +158,9 @@ body {
         display: none;
     }
     .burger {
+        display: flex;
+    }
+    .burger-menu.active {
         display: flex;
     }
     .one,.two,.three {
