@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My website</title>
+    <link rel="stylesheet" href="task3.css">
+</head>
+<body>
+    <!-- 導覽列 -->
+    <nav class="nav">
+        <div class="nav-title">My Website</div>
+        <div class="nav-menu">
+            <span>Item 1</span>
+            <span>Item 2</span>
+            <span>Item 3</span>
+            <span>Item 4</span>
+        </div>
+        <!-- 漢堡選單按鈕 -->
+        <div class="burger" onclick="toggle()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+    </nav>
+    <!--  漢堡選單 -->
+    <div class="burger-menu" id="burgerMenu">
+        <span class="close-btn" onclick="toggle()">✕</span>
+        <span>Item 1</span>
+        <span>Item 2</span>
+        <span>Item 3</span>
+        <span>Item 4</span>
+    </div>
+    <!-- 歡迎區塊 -->
+    <section class="welcome">
+        <p>Welcome to MyHome</p>
+    </section>
+    <!-- 內容區塊 -->
+    <main class="main-content">    
+        <!-- Bars區塊 --> 
+        <div class="bars">
+
+        </div>
+        <!-- Content Blocks區塊 -->
+        <div class="Content-blocks">
+
+        </div>
+        <!--Load按鈕-->
+        <div class="loadDiv">
+        <button class="load">Load More</button>
+        </div>
+    </main>
+    <script src="task3.js"></script>
+</body>
+</html>
