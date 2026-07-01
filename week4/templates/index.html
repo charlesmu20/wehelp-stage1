@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員系統</title>
+    <link rel="stylesheet" href="/static/index.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">歡迎光臨，請輸入信箱密碼</div>
+        <form id="signin" action="/login" method="post">
+            <h2>登入系統</h2>
+            信箱<input type="text" id="signin-email" name="email"/><br>
+            密碼<input type="password" id="signin-password" name="password"/><br>
+            同意條款<input type="checkbox" id="checkbox"/><br>
+            <button type="submit">登入</button>
+        </form>
+    </div>
+    <script src="/static/index.js"></script>
+</body>
+</html>
