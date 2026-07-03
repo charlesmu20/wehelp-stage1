@@ -10,3 +10,13 @@ signIn.addEventListener("submit",function(event){
     let password = document.querySelector("#signin-password").value
     console.log(email,password)
 })
+function getHotel(){
+    //判斷輸入的ID是不是正整數
+    let IdInput = document.querySelector("#id-input").value;
+    let id = Number(IdInput);
+    if (id<=0 || !Number.isInteger(id) || isNaN(id)){
+        alert("請輸入正整數")
+        return
+    }
+    window.location.href = `/hotel/${id}`;
+}
