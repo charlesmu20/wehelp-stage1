@@ -43,3 +43,34 @@ UPDATE member SET  name='test2' WHERE email='test@test.com';
 ```
 ![截圖](image/task3_result.png)
 ![截圖](image/task3_result2.png)
+
+## Task 4: SQL Aggregation Functions
+
+### 先修改資料表的資料再使用聚合函式（原先都是預設值0）
+```sql
+UPDATE member SET follower_count = 150 WHERE id = 2;
+UPDATE member SET follower_count = 320 WHERE id = 3;
+UPDATE member SET follower_count = 87 WHERE id = 5;
+UPDATE member SET follower_count = 450 WHERE id = 6;
+SELECT COUNT(*) FROM member;
+SELECT SUM(follower_count) FROM member;
+SELECT AVG(follower_count) FROM member;
+SELECT AVG(follower_count) FROM (
+    SELECT * FROM member ORDER BY follower_count DESC LIMIT 2
+) AS top2;
+```
+![截圖](image/task4_result.png)
+
+## Task 5: SQL JOIN
+
+### 建立資料表 message
+```sql
+CREATE TABLE message(
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    member_id INT UNSIGNED NOT NULL,
+    content TEXT NOT NULL,
+    like_count INT UNSIGNED NOT NULL DEFAULT 0,
+    time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(member_id) REFERENCES member(id),
+);
+```
