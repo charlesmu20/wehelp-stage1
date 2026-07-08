@@ -63,7 +63,7 @@ SELECT AVG(follower_count) FROM (
 
 ## Task 5: SQL JOIN
 
-### 建立資料表 message
+### 建立資料表 message 、 新增資料 、 合併資料表
 ```sql
 CREATE TABLE message(
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -71,6 +71,22 @@ CREATE TABLE message(
     content TEXT NOT NULL,
     like_count INT UNSIGNED NOT NULL DEFAULT 0,
     time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(member_id) REFERENCES member(id),
+    FOREIGN KEY(member_id) REFERENCES member(id)
 );
+INSERT INTO message (member_id, content, like_count) VALUES 
+(1, '大家好！', 10),
+(1, '我喜歡寫程式', 20),
+(1, '測試留言', 30),
+(2, '今天天氣真好', 15),
+(2, '學習中', 25),
+(3, '學習SQL中', 40),
+(5, '哈囉大家', 50),
+(6, '今天學了JOIN', 35);
+
+SELECT member.name, message.content FROM message JOIN member ON message.member_id = member.id;
+SELECT member.name, message.content FROM message JOIN member ON message.member_id = member.id WHERE member.email = 'test@test.com';
+SELECT AVG(message.like_count) FROM message JOIN  member ON message.member_id = member.id WHERE member.email='test@test.com';
+SELECT member.email, AVG(message.like_count) FROM message JOIN member ON message.member_id = member.id GROUP BY member.email;
 ```
+![截圖](image/task5_result.png)
+![截圖](image/task5_result2.png)
