@@ -7,6 +7,8 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from typing import Annotated
 from starlette.middleware.sessions import SessionMiddleware
+from fastapi.middleware.cors import CORSMiddleware
+
 con = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -15,6 +17,13 @@ con = mysql.connector.connect(
     )
 app= FastAPI()
 app.add_middleware(SessionMiddleware, secret_key="K9mP2nQ7rL4wV8j")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:8000"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+    allow_credentials=True
+)
 templates = Jinja2Templates(directory="templates")
 
 @app.get("/")
@@ -92,10 +101,9 @@ def get_message(request: Request):
         return {"error": True}
     #從資料庫抓所有留言資料
     cursor = con.cursor()
-    cursor.execute("SELECT message.id, member.name, message.content, message.member_id FROM message JOIN member ON message.member_id = member.id")
+    cursor.execute("SELECT message.id, member.name, message.content, message.member_id FROM message JOIN member ON message.member_id = member.id ORDER BY message.id ASC")
     results = cursor.fetchall()
     cursor.close()
-    print(results)
     #把資料存成指定格式再return回前端
     data=[]
     member_id = request.session["member"]["id"]
@@ -107,8 +115,18 @@ def get_message(request: Request):
             "self":  result[3]== member_id
         })
     return {"ok":True,"data":data}
+#刪除留言
+@app.delete("/api/message/{id}")
+def delete_message(request: Request,id: int):
+    if request.session.get("member") is None:
+        return {"error": True}
+    #根據id刪除留言資料
+    cursor = con.cursor()
+    cursor.execute("DELETE FROM message WHERE id=%s",(id,))
+    con.commit()
+    cursor.close()
+    return {"ok":True}
 #靜態檔案
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
-# uvicorn main:app --reload

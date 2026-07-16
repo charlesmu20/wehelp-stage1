@@ -17,7 +17,7 @@
             <label>內容</label>
             <input type="text" id="message_input"/>
         </div>
-        <button onclick="submitMessage()">送出</button>
+        <button class="submit" onclick="submitMessage()">送出</button>
     </div>
 
     <div id="message_list">
@@ -26,7 +26,9 @@
     <script>
         //拿留言資料
         async function getMessage(){
-            const response = await fetch("/api/message");
+            const response = await fetch("http://127.0.0.1:3000/api/message",{
+                credentials: "include"
+            });
             const result = await response.json();
             const messageList = document.querySelector("#message_list");
             messageList.innerHTML = "";
@@ -34,21 +36,41 @@
                 const messageDiv = document.createElement("div");
                 messageDiv.className = "message_div"
                 messageDiv.textContent = `${message.name} : ${message.content}`;
-                messageList.appendChild(messageDiv);
+                const wrapper = document.createElement("div")
+                wrapper.className = "message_wrapper"
+                wrapper.appendChild(messageDiv)
+                if (message.self === true){
+                    const deleteBtn = document.createElement("button");
+                    deleteBtn.textContent = "❌"
+                    deleteBtn.addEventListener("click",async function(){
+                        if (confirm("確定要刪除嗎？")) {
+                            const response = await fetch(`http://127.0.0.1:3000/api/message/${message.id}`,{
+                                method: "DELETE",
+                                credentials: "include",
+                            })
+                            const data = await response.json();
+                            if (data.ok){
+                                getMessage();
+                            }
+                        };
+                    });
+                    wrapper.appendChild(deleteBtn)
+                };  
+                messageList.appendChild(wrapper)
             });
         }
         //傳送留言
         async function submitMessage(){
-            let messageInput= document.querySelector("#message_input")
-            .value.trim();
+            let messageInput= document.querySelector("#message_input").value.trim();
             if (messageInput === "") {
                 return
             }
-            const response = await fetch("/api/message",{
+            const response = await fetch("http://127.0.0.1:3000/api/message",{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"
                 },
+                credentials: "include",
                 body:JSON.stringify({
                     content: messageInput
                 })

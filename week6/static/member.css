@@ -33,7 +33,7 @@
             height: 30px;
             width: 300px;
         }
-        button{
+        .submit{
             padding: 5px 20px;
             margin-top: 20px;
         }
@@ -45,5 +45,11 @@
         }
         .message_div{
             font-size: 20px;
-            margin-top: 10px;
+        }
+        .message_wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
         }
