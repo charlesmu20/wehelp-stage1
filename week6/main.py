@@ -120,8 +120,15 @@ def get_message(request: Request):
 def delete_message(request: Request,id: int):
     if request.session.get("member") is None:
         return {"error": True}
-    #根據id刪除留言資料
+    # 後端確認這則留言是否屬於當下登入的使用者
+    member_id = request.session["member"]["id"]
     cursor = con.cursor()
+    cursor.execute("SELECT member_id FROM message WHERE id=%s",(id,))
+    result = cursor.fetchone()
+    if result is None or result[0] != member_id:
+        cursor.close()
+        return{"error":True}
+    #根據id刪除留言資料
     cursor.execute("DELETE FROM message WHERE id=%s",(id,))
     con.commit()
     cursor.close()
