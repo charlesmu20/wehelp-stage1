@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會員系統</title>
+    <link rel="stylesheet" href="/static/index.css">
+</head>
+<body>
+    <header>歡迎光臨，請註冊登入系統</header>
+    <form id="signup" action="/signup" method="post">
+        <h2>註冊帳號</h2>
+        <div class="form-content">
+            <div class="form-row">
+                <label>姓名</label><input type="text" id="signup-name" name="name"/>
+            </div>
+            <div class="form-row">
+                <label>信箱</label><input type="text" id="signup-email" name="email"/>
+            </div>
+            <div class="form-row">
+                <label>密碼</label><input type="password" id="signup-password" name="password"/>
+            </div>
+        </div>
+        <button type="submit">註冊</button>
+    </form>
+    <form id="signin" action="/login" method="post">
+        <h2>登入系統</h2>
+        <div class="form-content">
+            <div class="form-row">
+                <label>信箱</label><input type="text" id="signin-email" name="email"/>
+            </div>
+            <div class="form-row">
+                <label>密碼</label><input type="password" id="signin-password" name="password"/>
+            </div>
+        </div>
+        <button type="submit">登入</button>
+    </form>
+    <script src="/static/index.js"></script>
+</body>
+</html>

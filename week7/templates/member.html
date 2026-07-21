@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member</title>
+    <link rel="stylesheet" href="/static/member.css">
+</head>
+<body>
+    <header>歡迎光臨，這是會員頁</header>
+    <div class="hello">{{ name }}，歡迎登入系統</div>
+    <a href="/logout">登出系統</a>
+    <!-- 產生token區塊 -->
+    <div id="token_form">
+        <h2>MCP 伺服器設定</h2>
+        <p>請使用 http://127.0.0.1:3000/mcp/ 網址</p>
+        <p>點擊產生 Token 取得金鑰</p>
+        <button onclick="generateToken()">產生 Token</button>
+        <p id="token_display"></p>
+    </div>
+    <!-- 留言區塊 -->
+    <div id="message_form">
+        <h2>快來留言吧</h2>
+        <div class="form-row">
+            <label>內容</label>
+            <input type="text" id="message_input"/>
+        </div>
+        <button class="submit" onclick="submitMessage()">送出</button>
+    </div>
+
+    <div id="message_list">
+
+    </div>
+    <script>
+        //拿留言資料
+        async function getMessage(){
+            const response = await fetch("http://127.0.0.1:3000/api/message",{
+                credentials: "include"
+            });
+            const result = await response.json();
+            const messageList = document.querySelector("#message_list");
+            messageList.innerHTML = "";
+            result.data.forEach(message=>{
+                const messageDiv = document.createElement("div");
+                messageDiv.className = "message_div"
+                messageDiv.textContent = `${message.name} : ${message.content}`;
+                const wrapper = document.createElement("div")
+                wrapper.className = "message_wrapper"
+                wrapper.appendChild(messageDiv)
+                if (message.self === true){
+                    const deleteBtn = document.createElement("button");
+                    deleteBtn.textContent = "❌"
+                    deleteBtn.addEventListener("click",async function(){
+                        if (confirm("確定要刪除嗎？")) {
+                            const response = await fetch(`http://127.0.0.1:3000/api/message/${message.id}`,{
+                                method: "DELETE",
+                                credentials: "include",
+                            })
+                            const data = await response.json();
+                            if (data.ok){
+                                getMessage();
+                            }
+                        };
+                    });
+                    wrapper.appendChild(deleteBtn)
+                };  
+                messageList.appendChild(wrapper)
+            });
+        }
+        //傳送留言
+        async function submitMessage(){
+            let messageInput= document.querySelector("#message_input").value.trim();
+            if (messageInput === "") {
+                return
+            }
+            const response = await fetch("http://127.0.0.1:3000/api/message",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                credentials: "include",
+                body:JSON.stringify({
+                    content: messageInput
+                })
+            });
+            const data = await response.json();
+            if (data.ok){
+                document.querySelector("#message_input").value = ""
+                getMessage();
+            };
+        };
+
+        //generate token
+        async function generateToken(){
+            const response = await fetch("http://127.0.0.1:3000/api/token",{
+                method:"PUT",
+                credentials:"include"
+            });
+            const data = await response.json();
+            if (data.ok){
+                const tokenDisplay = document.querySelector("#token_display");
+                tokenDisplay.textContent = data.token;
+            };
+        };
+        //載入頁面時自動執行
+        getMessage();
+    </script>
+</body>
+</html>
