@@ -13,7 +13,7 @@
     <!-- 產生token區塊 -->
     <div id="token_form">
         <h2>MCP 伺服器設定</h2>
-        <p>請使用 http://127.0.0.1:3000/mcp/ 網址</p>
+        <p>請使用 http://127.0.0.1:8000/mcp/ 網址</p>
         <p>點擊產生 Token 取得金鑰</p>
         <button onclick="generateToken()">產生 Token</button>
         <p id="token_display"></p>
@@ -34,7 +34,7 @@
     <script>
         //拿留言資料
         async function getMessage(){
-            const response = await fetch("http://127.0.0.1:3000/api/message",{
+            const response = await fetch("/api/message",{
                 credentials: "include"
             });
             const result = await response.json();
@@ -52,7 +52,7 @@
                     deleteBtn.textContent = "❌"
                     deleteBtn.addEventListener("click",async function(){
                         if (confirm("確定要刪除嗎？")) {
-                            const response = await fetch(`http://127.0.0.1:3000/api/message/${message.id}`,{
+                            const response = await fetch(`/api/message/${message.id}`,{
                                 method: "DELETE",
                                 credentials: "include",
                             })
@@ -73,7 +73,7 @@
             if (messageInput === "") {
                 return
             }
-            const response = await fetch("http://127.0.0.1:3000/api/message",{
+            const response = await fetch("/api/message",{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"
@@ -92,7 +92,7 @@
 
         //generate token
         async function generateToken(){
-            const response = await fetch("http://127.0.0.1:3000/api/token",{
+            const response = await fetch("/api/token",{
                 method:"PUT",
                 credentials:"include"
             });

@@ -8,9 +8,8 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from typing import Annotated
 from starlette.middleware.sessions import SessionMiddleware
-from fastapi.middleware.cors import CORSMiddleware
 from fastmcp import FastMCP
-from fastmcp.server.dependencies import get_http_headers
+from fastmcp.server.dependencies import get_http_request
 
 con = mysql.connector.connect(
         host="localhost",
@@ -20,16 +19,9 @@ con = mysql.connector.connect(
     )
 
 mcp = FastMCP("Testing Message Website")
-mcp_app = mcp.http_app(path="/mcp")
+mcp_app = mcp.http_app(path="/")
 app= FastAPI(lifespan=mcp_app.lifespan)
 app.add_middleware(SessionMiddleware, secret_key="K9mP2nQ7rL4wV8j")
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://127.0.0.1:8000"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-    allow_credentials=True
-)
 templates = Jinja2Templates(directory="templates")
 
 @app.get("/")
@@ -87,7 +79,7 @@ def login(request: Request, email: Annotated[str, Form()], password: Annotated[s
     
 #建立留言
 @app.post("/api/message")
-def create_message(request: Request, body: dict=Body(None)):
+def post_message(request: Request, body: dict=Body(None)):
     #先檢查登入狀態
     if request.session.get("member") is None:
         return {"error": True}
@@ -164,8 +156,9 @@ def create_token(request: Request):
 def create_message(content: str):
     """Create a new message in Testing Message Website."""
     #取出token
-    headers = get_http_headers()
-    auth_header = headers.get("authorization","")
+    request = get_http_request()
+    auth_header = request.headers.get("authorization","")
+    print("Auth header:", auth_header) 
     if not auth_header.startswith("Bearer "):
         return {"error": True}
     token = auth_header[7:]
